@@ -1,0 +1,466 @@
+[
+    {
+        "id": "d01824e7.29f4e8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "c742dd4f.44576",
+        "type": "ui_gauge",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "group": "53503f35.65a63",
+        "order": 0,
+        "width": "6",
+        "height": "6",
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 390,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "ba40ea6f.caac68",
+        "type": "ui_chart",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "group": "a322cb94.ace098",
+        "order": 0,
+        "width": "10",
+        "height": "6",
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 990,
+        "y": 60,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b8195a74.ace1b8",
+        "type": "ui_gauge",
+        "z": "d01824e7.29f4e8",
+        "name": "Pulse",
+        "group": "53503f35.65a63",
+        "order": 0,
+        "width": "6",
+        "height": "6",
+        "gtype": "gage",
+        "title": "Pulse",
+        "label": "BPM",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 630,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "9270514.255cfb",
+        "type": "mqtt in",
+        "z": "d01824e7.29f4e8",
+        "name": "Temperature",
+        "topic": "feeds/temperature",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "4c4fd163.0433b",
+        "x": 170,
+        "y": 60,
+        "wires": [
+            [
+                "c742dd4f.44576",
+                "77a96f77.f4f66"
+            ]
+        ]
+    },
+    {
+        "id": "77a96f77.f4f66",
+        "type": "debug",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 390,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "6c4d5b79.793ea4",
+        "type": "mqtt in",
+        "z": "d01824e7.29f4e8",
+        "name": "Ecg",
+        "topic": "feeds/ecg",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "4c4fd163.0433b",
+        "x": 750,
+        "y": 60,
+        "wires": [
+            [
+                "ba40ea6f.caac68",
+                "16828225.1715ce"
+            ]
+        ]
+    },
+    {
+        "id": "16828225.1715ce",
+        "type": "debug",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1010,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "59fe4fcd.5aef2",
+        "type": "inject",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "5",
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "440681fd.e8fa2"
+            ]
+        ]
+    },
+    {
+        "id": "440681fd.e8fa2",
+        "type": "function",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "func": "// create random position\n//19.1947722,72.9580224\n//var lat = 19.1947722;\n//var lon = 72.9580224; \n\nvar lat = msg.payload.col2;\nvar lon = msg.payload.col3;\n\n//var lat = 51 + Math.random() * 0.2;\n//var lon = -1.45 + Math.random() * 0.2;\nmsg.payload={lat:lat, lon:lon, name:\"Ambulance\", icon:\"fa-ambulance\"};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 310,
+        "y": 240,
+        "wires": [
+            [
+                "ef519091.3b1f6"
+            ]
+        ]
+    },
+    {
+        "id": "85a05131.2b838",
+        "type": "inject",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "topic": "",
+        "payload": "https://anishtipnis.fred.sensetecnic.com/api/worldmap/",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 110,
+        "y": 280,
+        "wires": [
+            [
+                "4fdedaa0.593124"
+            ]
+        ]
+    },
+    {
+        "id": "e4ab244a.367db8",
+        "type": "ui_template",
+        "z": "d01824e7.29f4e8",
+        "group": "8e974ff8.16b3a",
+        "name": "",
+        "order": 1,
+        "width": "15",
+        "height": "7",
+        "format": "<div ng-bind-html=\"msg.payload | trusted\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "templateScope": "local",
+        "x": 500,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4fdedaa0.593124",
+        "type": "template",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<iframe src={{{payload}}} height=800px width=900px></iframe>",
+        "x": 320,
+        "y": 280,
+        "wires": [
+            [
+                "e4ab244a.367db8"
+            ]
+        ]
+    },
+    {
+        "id": "e81a21ab.9684b",
+        "type": "comment",
+        "z": "d01824e7.29f4e8",
+        "name": "How to embed Map in Dashboard",
+        "info": "This example shows how to embed the Worldmap \ninto a template node within the `node-red-dashboard`\n\nThe first flow creates a dashboard button that \ngenerates a randon position, with the required \nicon, and passes that to the worldmap. The\nmap is configured to automatically pan to the\nposition of any point that arrives.\n\nThe second flow initialise the dashboard template\nwith the initial map and sets it to a more square shape\nby adjusting the height.",
+        "x": 170,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "ef519091.3b1f6",
+        "type": "worldmap",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "lat": "",
+        "lon": "",
+        "zoom": "",
+        "layer": "OSM",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "hide",
+        "panit": "true",
+        "hiderightclick": "false",
+        "coords": "none",
+        "path": "",
+        "x": 650,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "5db45eb6.a223c",
+        "type": "ui_toast",
+        "z": "d01824e7.29f4e8",
+        "position": "dialog",
+        "displayTime": "3",
+        "highlight": "",
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "",
+        "topic": "",
+        "name": "",
+        "x": 360,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e16498a7.20bb28",
+        "type": "inject",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 110,
+        "y": 520,
+        "wires": [
+            [
+                "5db45eb6.a223c"
+            ]
+        ]
+    },
+    {
+        "id": "b127781c.3e9938",
+        "type": "ui_button",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "group": "8e974ff8.16b3a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Open Maps In Other Tab?",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "https://anishtipnis.fred.sensetecnic.com/api/worldmap/",
+        "payloadType": "str",
+        "topic": "Here It Is",
+        "x": 320,
+        "y": 460,
+        "wires": [
+            [
+                "5db45eb6.a223c"
+            ]
+        ]
+    },
+    {
+        "id": "67bd7805.666a98",
+        "type": "mqtt in",
+        "z": "d01824e7.29f4e8",
+        "name": "Gps",
+        "topic": "feeds/gps/csv",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "4c4fd163.0433b",
+        "x": 90,
+        "y": 360,
+        "wires": [
+            [
+                "d790235d.820aa"
+            ]
+        ]
+    },
+    {
+        "id": "d790235d.820aa",
+        "type": "csv",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "",
+        "skip": "0",
+        "x": 250,
+        "y": 360,
+        "wires": [
+            [
+                "6610ed79.b957b4",
+                "440681fd.e8fa2"
+            ]
+        ]
+    },
+    {
+        "id": "6610ed79.b957b4",
+        "type": "debug",
+        "z": "d01824e7.29f4e8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 420,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "53503f35.65a63",
+        "type": "ui_group",
+        "z": "",
+        "name": "Smart Ambulance",
+        "tab": "2a817d09.536c32",
+        "disp": true,
+        "width": "15",
+        "collapse": false
+    },
+    {
+        "id": "a322cb94.ace098",
+        "type": "ui_group",
+        "z": "",
+        "name": "Chart",
+        "tab": "2a817d09.536c32",
+        "order": 2,
+        "disp": true,
+        "width": "15",
+        "collapse": false
+    },
+    {
+        "id": "4c4fd163.0433b",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "PYT_CloudMqtt",
+        "broker": "m13.cloudmqtt.com",
+        "port": "18786",
+        "clientid": "AnishFred",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "90",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "8e974ff8.16b3a",
+        "type": "ui_group",
+        "z": "",
+        "name": "Ambulance Location",
+        "tab": "2a817d09.536c32",
+        "order": 2,
+        "disp": true,
+        "width": "15",
+        "collapse": false
+    },
+    {
+        "id": "2a817d09.536c32",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Smart Ambulance",
+        "icon": "fa-car"
+    }
+]
